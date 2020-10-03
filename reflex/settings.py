@@ -77,12 +77,12 @@ WSGI_APPLICATION = 'reflex.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'reflex',
-        'USER': 'reflex',
-        'PASSWORD': 'reflex',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Menu',
+        'USER': 'Huncho',
+        'PASSWORD': 'c11h28no3',
         'HOST': 'localhost',
-        'PORT': '5432',
+        # 'PORT': '5432',
     }
 }
 
