@@ -1,6 +1,29 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser
+from django.utils.translation import gettext_lazy as _
+from .managers import CustomUserManager
+from django.contrib.auth.models import PermissionsMixin
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    
+    staffname = models.CharField(max_length=20, unique=True)
+    tablename = models.CharField(max_length=20)
+    password = models.CharField(max_length=255)
+    is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    USERNAME_FIELD = 'staffname'
+    REQUIRED_FIELDS = ['tablename']
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
+
 
 class Customer(models.Model):
     pending = 'Pending'
@@ -11,7 +34,7 @@ class Customer(models.Model):
         (verified,verified),
     )
 
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    # customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     address = models.TextField()
     contact = models.CharField(max_length = 10)
     orders = models.IntegerField(default=0)
@@ -31,10 +54,10 @@ class Staff(models.Model):
         (deliveryboy,deliveryboy),
     )
     
-    staff_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    # staff_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     address = models.TextField()
     contact = models.CharField(max_length = 10)
-    email = User.email
+    staffname = CustomUser.staffname
     salary = models.IntegerField()
     role = models.CharField(max_length = 30, choices = ROLES)
     
@@ -68,7 +91,7 @@ class Order(models.Model):
         (delivery, delivery),
     )
 
-    customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    # customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
     order_timestamp = models.CharField(max_length=100, blank=True)
     delivery_timestamp = models.CharField(max_length=100, blank=True)
     payment_status = models.CharField(max_length = 100, choices = STATUS)
@@ -77,7 +100,7 @@ class Order(models.Model):
     total_amount = models.IntegerField()
     payment_method = models.CharField(max_length = 100, choices = PAYMENT)
     location = models.CharField(max_length=200, blank=True, null=True)
-    delivery_boy = models.ForeignKey(Staff,on_delete=models.CASCADE, null=True, blank=True)
+    # delivery_boy = models.ForeignKey(Staff,on_delete=models.CASCADE, null=True, blank=True)
 
     def confirmOrder(self):
         self.order_timestamp = timezone.localtime().__str__()[:19]
@@ -133,7 +156,7 @@ class Food(models.Model):
     
 
 class Comment(models.Model):
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    # CustomUser = models.ForeignKey(Customer, on_delete=models.CASCADE)
     content = models.CharField(max_length=250)
 
 class Data(models.Model):
@@ -143,14 +166,14 @@ class Data(models.Model):
 
 class OrderContent(models.Model):
     quantity = models.IntegerField(default=1)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    # food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    # order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
 class Cart(models.Model):
     quantity = models.IntegerField(default=1)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    # CustomUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 class DeliveryBoy(models.Model):
     order= models.ForeignKey(Order, on_delete=models.CASCADE)
-    delivery_boy = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    # delivery_boy = models.ForeignKey(Staff, on_delete=models.CASCADE)

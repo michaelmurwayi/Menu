@@ -246,7 +246,11 @@ a:hover {
 	border-radius: 2px;
 	padding: 20px 30px;
 }
-
+.feature-left-info{
+	background-color: #595c5f;
+	min-width: 100px;
+	background-size: cover;
+}
 
 /* Popovers */
 

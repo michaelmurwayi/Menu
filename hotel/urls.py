@@ -1,7 +1,9 @@
 from django.conf.urls import url
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    url(r'^login/$', views.login, name='login'),
     url(r'^$', views.index, name='index'),
     url(r'^cart/$', views.cart, name='cart'),
     url(r'^menu/$', views.menu, name='menu'),
