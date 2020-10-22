@@ -46,16 +46,16 @@
                                 {{error}}
                             </div>
                             {% endfor %} 
-                            {% for field in form %}
+                            
                             <div class="form-group has-errors text-danger small">
                                 {{field.errors}}
                             </div>
                             <div class="form-group has-errors text-danger small">
                             </div>
                             <div class="form-group">
-                                {{field}}
+                                {{ form }}
                             </div>
-                            {% endfor %}
+                           
                             <button type="submit" class="btn btn-lg btn-success btn-block">Signup</button>
                             </fieldset>
                             <br>

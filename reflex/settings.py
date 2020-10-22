@@ -25,7 +25,7 @@ SECRET_KEY = '^+=_@uh9j!0x%bt@r6x&q)agcqg*3t647=@^2ne-zkrjc&lf-s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '172.19.15.104']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '79e594de47f4.ngrok.io']
 
 
 # Application definition
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'reflex.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Menu',
+        'NAME': 'menu',
         'USER': 'Huncho',
         'PASSWORD': 'c11h28no3',
         'HOST': 'localhost',
@@ -131,6 +131,8 @@ EMAIL_PORT = 465
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL='/accounts/login'
+# LOGIN_URL='/accounts/login'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AUTH_USER_MODEL = 'hotel.Customuser'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None

@@ -17,23 +17,46 @@ from django.utils import timezone
 from reportlab.pdfgen import canvas
 from .models import Customer, Comment, Order, Food, Data, Cart, OrderContent, Staff, DeliveryBoy
 from .forms import SignUpForm
+from  django.contrib import auth
+
+
+def login(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    if request.method == 'POST':
+        import ipdb;ipdb.set_trace()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            # correct username and password login the user
+            auth.login(request, user)
+            return redirect('/')
+
+        else:
+            print(request, 'Error wrong username/password')
+
+    return render(request, 'registration/login.html')
 
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
+            
             user = form.save(commit=False)
-            user.email = form.cleaned_data['email']
-            user.first_name = form.cleaned_data['firstname']
-            user.last_name = form.cleaned_data['lastname']
-            user.email = form.cleaned_data['email']
-            user.username = user.email.split('@')[0]
+            # user.email = form.cleaned_data['email']
+            # user.username = form.cleaned_data["username"]
+            user.first_name = form.cleaned_data['staffname']
+            user.last_name = form.cleaned_data['tablename']
             user.set_password(form.cleaned_data['password'])
             user.save()
+            # import ipdb;ipdb.set_trace()
             address = form.cleaned_data['address']
             contact = form.cleaned_data['contact']
-            customer = Customer.objects.create(customer=user, address=address, contact=contact)
-            customer.save()
+            # customer = Customer.objects.create(customer=user, address=address, contact=contact)
+            # customer.save()
             return redirect('http://localhost:8000/accounts/login/')
         
     else:
