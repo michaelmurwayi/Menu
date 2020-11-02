@@ -19,7 +19,7 @@
 									<li><a href="{% url 'hotel:dashboard_admin' %}">Dashboard</a></li>
 									<li><a href="/accounts/logout/">Logout</a></li>
 									{% else %}
-									<li><a href="/accounts/login/">Login</a></li>
+									<li><a href="/login/">Login</a></li>
 									{% endif %}
 									<div class="clearfix"> </div>
 								</ul>
@@ -29,12 +29,12 @@
 					<div class="clearfix"> </div>
 				</div>
 				<div class="banner-info">
-					<h2>Tasty food served at your doorstep</h2>
-					<p>Experience the fastest delivery. Order now and get your food at your doorstep in 30 minutes!</p>
+					<h2>Quality Food At an affordable price </h2>
+					<p>Experience our awesome foods and services </p>
 				</div>
 				<div class="banner-grads">
 					<div class="col-md-3 banner-grad">
-						<a href="http://localhost:8000/menu?cuisine=south">
+						<a href="http://localhost:8000/menu?cuisine=breakfast">
 							<div class="banner-grad-img">
 								<img src="{% static 'images/breakfast.jpeg' %}" alt="" />
 								<h4>BreakFast</h4>
@@ -42,7 +42,7 @@
 						</a>
 					</div>
 					<div class="col-md-3 banner-grad">
-						<a href="http://localhost:8000/menu?cuisine=Gujarati">
+						<a href="http://localhost:8000/menu?cuisine=beverage">
 							<div class="banner-grad-img">
 								<img src="{% static 'images/beverage.jpeg' %}" alt="" />
 								<h4>Beverages</h4>
@@ -58,7 +58,7 @@
 						</a>
 					</div>
 					<div class="col-md-3 banner-grad">
-						<a href="http://localhost:8000/menu?cuisine=Punjabi">
+						<a href="http://localhost:8000/menu?cuisine=course">
 							<div class="banner-grad-img">
 								<img src="{% static 'images/punjabi.jpg' %}" alt="" />
 								<h4>MainCourse</h4>

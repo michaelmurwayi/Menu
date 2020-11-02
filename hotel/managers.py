@@ -5,11 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
+    for authentication instead of staffnames.
     """
     def create_user(self,
-                    username,
-                    tablenumber,
+                    staffname,
+                    tablename,
                     password,
                     is_staff=False,
                     is_active=True,
@@ -17,30 +17,30 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a User with the given email and passwords.
         """
-        if not username:
-            raise ValueError(_('The Username must be set'))
-        username = self.normalize_email(username)
-        user = self.model(username=username,
-                          tablenumber=tablenumber,
+        if not staffname:
+            raise ValueError(_('The staffname must be set'))
+        staffname = self.normalize_email(staffname)
+        user = self.model(staffname=staffname,
+                          tablename=tablename,
                           password=password,
                           )
         
-        username = username
-        tablenumber = tablenumber
+        staffname = staffname
+        tablename = tablename
         user.set_password(password)
         user.admin = is_admin
         user.staff = is_staff
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, password, username, tablename,
+    def create_superuser(self, password, staffname, tablename,
                          ):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
-                                username=username,
-                                tablesname=tablesname,
+                                staffname=staffname,
+                                tablename=tablename,
                                 password=password,
                                 )
         user.staff = True
