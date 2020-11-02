@@ -116,18 +116,18 @@ class Order(models.Model):
         return self.customer.__str__()
 
 class Food(models.Model):
-    indian = 'Indian'
-    south = 'South Indian'
-    gujarati = 'Gujarati'
-    punjabi = 'Punjabi'
+    breakfast = 'Breakfast'
+    beverages = 'Beverages'
     fast = 'Fast Food'
+    course = 'Main course'
+    snaks = 'Snaks'
     
     COURSE = (
-        (indian,indian),
-        (south,south),
-        (gujarati,gujarati),
-        (punjabi,punjabi),
+        (breakfast,breakfast),
+        (beverages,beverages),
         (fast,fast),
+        (course,course),
+        (snaks,snaks),
     )
 
     disabled = 'Disabled'
@@ -142,8 +142,8 @@ class Food(models.Model):
     course = models.CharField(max_length = 50, choices = COURSE)
     status = models.CharField(max_length=50, choices=STATUS)
     content_description = models.TextField()
-    base_price = models.FloatField()
-    sale_price = models.FloatField(default=base_price)
+    base_price = models.IntegerField()
+    sale_price = models.IntegerField(default=base_price)
     discount = models.DecimalField(default=0, decimal_places=2, max_digits=5)
     image = models.FileField(blank=True, null =True)
     num_order = models.IntegerField(default=0)
@@ -166,13 +166,13 @@ class Data(models.Model):
 
 class OrderContent(models.Model):
     quantity = models.IntegerField(default=1)
-    # food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    # order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
 class Cart(models.Model):
     quantity = models.IntegerField(default=1)
-    # food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    # CustomUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 class DeliveryBoy(models.Model):
     order= models.ForeignKey(Order, on_delete=models.CASCADE)

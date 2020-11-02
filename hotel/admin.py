@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Customer, Staff, Order, Food, Comment, Data, OrderContent, Cart, DeliveryBoy
+from .models import CustomUser, Customer, Staff, Order, Food, Comment, Data, OrderContent, Cart, DeliveryBoy
 
+admin.site.register(CustomUser)
 admin.site.register(Customer)
 admin.site.register(Staff)
 admin.site.register(Order)

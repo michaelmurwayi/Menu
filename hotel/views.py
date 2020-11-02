@@ -18,14 +18,13 @@ from reportlab.pdfgen import canvas
 from .models import Customer, Comment, Order, Food, Data, Cart, OrderContent, Staff, DeliveryBoy
 from .forms import SignUpForm
 from  django.contrib import auth
-
+from .models import CustomUser
 
 def login(request):
     if request.user.is_authenticated:
         return redirect('/')
 
     if request.method == 'POST':
-        import ipdb;ipdb.set_trace()
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
@@ -64,8 +63,8 @@ def signup(request):
         
     return render(request, 'registration/signup.html', {'form': form})
 
-@login_required
-@staff_member_required
+# @login_required
+# @staff_member_required
 def dashboard_admin(request):
     comments = Comment.objects.count()
     orders = Order.objects.count()
@@ -120,10 +119,10 @@ def menu(request):
     cuisine = request.GET.get('cuisine')
     print(cuisine)
     if cuisine is not None:
-        if ((cuisine == "Gujarati") or (cuisine == "Punjabi")):
+        if ((cuisine == "breakfast") or (cuisine == "beverage")):
             foods = Food.objects.filter(status="Enabled", course=cuisine)
-        elif(cuisine == "south"):
-            foods = Food.objects.filter(status="Enabled", course="South Indian")
+        elif(cuisine == "course"):
+            foods = Food.objects.filter(status="Enabled", course=cuisine)
         elif(cuisine == "fast"):
             foods = Food.objects.filter(course="Fast")
     else:
@@ -303,8 +302,9 @@ def food_details(request, foodID):
 @login_required
 def addTocart(request, foodID, userID):
     food = Food.objects.get(id=foodID)
-    user = User.objects.get(id=userID)
-    cart = Cart.objects.create(food=food, user=user)
+    import ipdb; ipdb.set_trace()
+    user = CustomUser.objects.get(id=userID)
+    cart = Cart.objects.create(food=food, user_id=request.user.id)
     cart.save()
     return redirect('hotel:cart')
 
@@ -316,38 +316,37 @@ def delete_item(request, ID):
 
 @login_required
 def cart(request):
-    user = User.objects.get(id=request.user.id)
+    user = CustomUser.objects.get(id=request.user.id)
     items = Cart.objects.filter(user=user)
     total = 0
     for item in items:
         total += item.food.sale_price
-    return render(request, 'cart.html', {'items': items, 'total':total})
+    return render(request, 'cart.html', {'items': items, 'total':total , "id":request.user.id})
 
 @login_required
 def placeOrder(request):
-    to_email = []
-    customer = Customer.objects.get(customer=request.user)
-    print(customer.address)
+    import ipdb; ipdb.set_trace()
+    customer = CustomUser.objects.get(id=request.user.id)
     items = Cart.objects.filter(user=request.user)
     for item in items:
         food = item.food
-        order = Order.objects.create(customer=customer, order_timestamp=timezone.now(), payment_status="Pending", 
-        delivery_status="Pending", total_amount=food.sale_price, payment_method="Cash On Delivery", location=customer.address)
+        order = Order.objects.create(order_timestamp=timezone.now(), payment_status="Pending", 
+        delivery_status="Pending", total_amount=food.sale_price, payment_method="Cash On Delivery", location=customer.tablename)
         order.save()
         orderContent = OrderContent(food=food, order=order)
         orderContent.save()
         item.delete()
-    mail_subject = 'Order Placed successfully'
-    to = str(customer.customer.email)
-    to_email.append(to)
-    from_email = 'pradeepgangwar39@gmail.com'
-    message = "Hi "+customer.customer.first_name+" Your order was placed successfully. Please go to your dashboard to see your order history. <br> Your order id is "+order.id+""
-    send_mail(
-        mail_subject,
-        message,
-        from_email,
-        to_email,
-    )
+    # mail_subject = 'Order Placed successfully'
+    # to = str(customer.customer.email)
+    # to_email.append(to)
+    # from_email = 'pradeepgangwar39@gmail.com'
+    # message = "Hi "+customer.customer.first_name+" Your order was placed successfully. Please go to your dashboard to see your order history. <br> Your order id is "+order.id+""
+    # send_mail(
+    #     mail_subject,
+    #     message,
+    #     from_email,
+    #     to_email,
+    # )
     return redirect('hotel:cart')
 
 @login_required
